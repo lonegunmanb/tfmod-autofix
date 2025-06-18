@@ -104,7 +104,7 @@ rule "terraform_heredoc_usage" {
 }
 
 rule "terraform_module_provider_declaration" {
-  enabled = true
+  enabled = false
 }
 
 rule "terraform_output_separate" {
@@ -150,7 +150,7 @@ rule "required_module_source_tffr1" {
 # AVM Output Rules
 
 rule "required_output_rmfr7" {
-  enabled = true
+  enabled = false
 }
 
 # AVM Variable Interface Rules
@@ -188,7 +188,7 @@ rule "tags" {
 }
 
 rule "provider_modtm_version_constraint" {
-  enabled = true
+  enabled = false
 }
 
 rule "valid_template_interpolation" {

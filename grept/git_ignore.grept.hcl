@@ -15,6 +15,7 @@ locals {
     ".DS_Store",
     "*.md.tmp",
     "policy/*",
+    "autofixmakefile",
   ])
 }
 
