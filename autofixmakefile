@@ -1,0 +1,58 @@
+REMOTE_SCRIPT := https://raw.githubusercontent.com/lonegunmanb/tfmod-autofix/main/scripts
+
+.PHONY: help
+help:
+	@echo "please use 'make <target>'"
+
+.PHONY: conftest
+conftest:
+	curl -H 'Cache-Control: no-cache, no-store' -sSL "$(REMOTE_SCRIPT)/conftest.sh" | bash
+
+.PHONY: docs
+docs:
+	curl -H 'Cache-Control: no-cache, no-store' -sSL "$(REMOTE_SCRIPT)/docs-gen.sh" | bash
+
+.PHONY: tffmtcheck
+tffmtcheck:
+	curl -H 'Cache-Control: no-cache, no-store' -sSL "$(REMOTE_SCRIPT)/terraform-fmt.sh" | bash
+
+.PHONY: tfvalidatecheck
+tfvalidatecheck:
+	curl -H 'Cache-Control: no-cache, no-store' -sSL "$(REMOTE_SCRIPT)/terraform-validate.sh" | bash
+
+.PHONY: terrafmtcheck
+terrafmtcheck:
+	curl -H 'Cache-Control: no-cache, no-store' -sSL "$(REMOTE_SCRIPT)/terrafmt-check.sh" | bash
+
+.PHONY: tflint
+tflint:
+	curl -H 'Cache-Control: no-cache, no-store' -sSL "$(REMOTE_SCRIPT)/run-tflint.sh" | bash
+
+.PHONY: lint
+lint: tflint
+
+.PHONY: pr-check
+pr-check: tfvalidatecheck lint conftest
+
+.PHONY: terrafmt
+terrafmt:
+	curl -H 'Cache-Control: no-cache, no-store' -sSL "$(REMOTE_SCRIPT)/terrafmt.sh" | bash
+
+.PHONY: pre-commit
+pre-commit: mapotf-precommit grept-precommit autofix docs terrafmt
+
+.PHONY: mapotf-precommit
+mapotf-precommit:
+	curl -H 'Cache-Control: no-cache, no-store' -sSL "$(REMOTE_SCRIPT)/mapotf-precommit.sh" | bash
+
+.PHONY: grept-precommit
+grept-precommit:
+	curl -H 'Cache-Control: no-cache, no-store' -sSL "$(REMOTE_SCRIPT)/grept-precommit.sh" | bash
+
+.PHONY: autofix
+autofix:
+	curl -H 'Cache-Control: no-cache, no-store' -sSL "$(REMOTE_SCRIPT)/autofix.sh" | bash
+
+.PHONY: grept-apply
+grept-apply:
+	curl -H 'Cache-Control: no-cache, no-store' -sSL "$(REMOTE_SCRIPT)/grept-apply.sh" | bash
