@@ -4,7 +4,6 @@ locals {
     Authorization = "Bearer ${local.github_token}"
   }
   synced_files = toset([
-    "Makefile",
   ])
   url_prefix        = "https://raw.githubusercontent.com/lonegunmanb/tfmod-autofix/main"
 }
