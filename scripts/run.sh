@@ -7,16 +7,16 @@ run_make() {
   local target="$1"
 
   if [ -z "$IN_CONTAINER" ]; then
-    $CONTAINER_RUNTIME run --pull always --user "$(id -u):$(id -g)" --rm -v "$(pwd)":/src -w /src -v $AZURE_CONFIG_DIR:/azureconfig -e AZURE_CONFIG_DIR=/azureconfig -e GITHUB_TOKEN -e GITHUB_REPOSITORY -e ARM_SUBSCRIPTION_ID -e ARM_TENANT_ID -e ARM_CLIENT_ID -e ARM_CLIENT_SECRET $AUTOFIX_IMAGE make "$target"
+    $CONTAINER_RUNTIME run --pull always --user "$(id -u):$(id -g)" --rm -v "$(pwd)":/src -w /src -v $AZURE_CONFIG_DIR:/azureconfig -e AZURE_CONFIG_DIR=/azureconfig -e GITHUB_TOKEN -e GITHUB_REPOSITORY -e ARM_SUBSCRIPTION_ID -e ARM_TENANT_ID -e ARM_CLIENT_ID -e ARM_CLIENT_SECRET $AUTOFIX_IMAGE make -f autofixmakefile "$target"
   else
-    make "$target"
+    make -f autofixmakefile "$target"
   fi
 }
 
 # if Makefile is not present, download it from the repository
-if [ ! -f Makefile ]; then
+if [ ! -f autofixmakefile ]; then
     echo "Makefile not found. Downloading from the repository..."
-    curl -H 'Cache-Control: no-cache, no-store' -sSL "https://raw.githubusercontent.com/lonegunmanb/tfmod-autofix/main/Makefile" -o Makefile
+    curl -H 'Cache-Control: no-cache, no-store' -sSL "https://raw.githubusercontent.com/lonegunmanb/tfmod-autofix/main/autofixmakefile" -o autofixmakefile
 else
     echo "Makefile found."
 fi
