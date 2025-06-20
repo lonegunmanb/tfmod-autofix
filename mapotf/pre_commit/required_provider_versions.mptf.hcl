@@ -1,10 +1,10 @@
 locals {
-  azurerm_provider_version_valid = try(!semvercheck(data.terraform.this.required_providers.azurerm.version, "4.999.999"), false) && !try(semvercheck(data.terraform.this.required_providers.azurerm.version, "3.999.999"), true)
+  azurerm_provider_version_valid = try(semvercheck(data.terraform.this.required_providers.azurerm.version, "4.999.999"), false) && !try(semvercheck(data.terraform.this.required_providers.azurerm.version, "3.999.999"), true)
   azapi_provider_version_valid = try(!semvercheck(data.terraform.this.required_providers.azapi.version, "2.3.999"), false)
 }
 
 transform "update_in_place" azapi_provider_version {
-  for_each             = local.avm_headers_for_azapi_enabled && !local.azapi_provider_version_valid ? toset([1]) : toset([])
+  for_each             = !local.azapi_provider_version_valid ? toset([1]) : toset([])
   target_block_address = "terraform"
   asraw {
     required_providers {
