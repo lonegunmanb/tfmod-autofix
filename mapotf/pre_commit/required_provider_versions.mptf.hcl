@@ -3,7 +3,7 @@ data "resource" this {}
 locals {
   azurerm_provider_version_valid = try(semvercheck(data.terraform.this.required_providers.azurerm.version, "4.999.999"), false) && !try(semvercheck(data.terraform.this.required_providers.azurerm.version, "3.999.999"), true)
   azapi_provider_version_valid = try(!semvercheck(data.terraform.this.required_providers.azapi.version, "2.3.999"), false)
-  required_terraform_version_declared = try(data.terraform.this.required_version != "", false)
+  required_terraform_version_declared = try(data.terraform.this.required_version != null && data.terraform.this.required_version != "", false)
   azapi_resource_defined = can([ for k, _ in data.resource.this.result : k if startswith(k, "azapi_") ][0])
   azurerm_resource_defined = can([ for k, _ in data.resource.this.result : k if startswith(k, "azurerm_")][0])
 }
