@@ -16,6 +16,7 @@ locals {
     "*.md.tmp",
     "policy/*",
     "autofixmakefile",
+    "target.json"
   ])
 }
 
