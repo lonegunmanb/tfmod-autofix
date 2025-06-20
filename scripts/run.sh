@@ -1,11 +1,13 @@
 #!/usr/bin/env bash
 
+AUTOFIX_IMAGE=${AUTOFIX_IMAGE:-mcr.microsoft.com/azterraform}
+
 # Function to run make target either directly (if in container) or via container
 run_make() {
   local target="$1"
 
   if [ -z "$IN_CONTAINER" ]; then
-    $CONTAINER_RUNTIME run --pull always --user "$(id -u):$(id -g)" --rm -v "$(pwd)":/src -w /src -v $AZURE_CONFIG_DIR:/azureconfig -e AZURE_CONFIG_DIR=/azureconfig -e GITHUB_TOKEN -e GITHUB_REPOSITORY -e ARM_SUBSCRIPTION_ID -e ARM_TENANT_ID -e ARM_CLIENT_ID -e ARM_CLIENT_SECRET mcr.microsoft.com/azterraform make "$target"
+    $CONTAINER_RUNTIME run --pull always --user "$(id -u):$(id -g)" --rm -v "$(pwd)":/src -w /src -v $AZURE_CONFIG_DIR:/azureconfig -e AZURE_CONFIG_DIR=/azureconfig -e GITHUB_TOKEN -e GITHUB_REPOSITORY -e ARM_SUBSCRIPTION_ID -e ARM_TENANT_ID -e ARM_CLIENT_ID -e ARM_CLIENT_SECRET $AUTOFIX_IMAGE make "$target"
   else
     make "$target"
   fi
