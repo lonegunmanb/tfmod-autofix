@@ -8,7 +8,7 @@ generate_docs () {
   if [ -f ".terraform-docs.yml" ]; then
     terraform-docs -c ".terraform-docs.yml" "$dir"
   else
-    terraform-docs markdown table "$dir"
+    terraform-docs markdown table --output-file README.md --output-mode inject "$dir"
   fi
 }
 
